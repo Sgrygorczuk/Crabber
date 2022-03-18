@@ -6,6 +6,10 @@ TagManager:
   tags:
   - Obstacle
   - Death
+  - Enemy
+  - Checkpoint
+  - Fruit
+  - Crab
   layers:
   - Default
   - TransparentFX
