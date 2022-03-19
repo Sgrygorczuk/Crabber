@@ -10,6 +10,7 @@ TagManager:
   - Checkpoint
   - Fruit
   - Crab
+  - Tip
   layers:
   - Default
   - TransparentFX

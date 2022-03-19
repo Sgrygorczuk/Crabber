@@ -147,7 +147,7 @@ public class GameFlow : MonoBehaviour
         _camera.m_LookAt = _cameraLocation;
         
         //Starts the exit animation and moves on to the next scene 
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(5f);
         _winAnimator.Play($"LevelEnd");
         yield return new WaitForSeconds(2.1f);
         //Exit levle
