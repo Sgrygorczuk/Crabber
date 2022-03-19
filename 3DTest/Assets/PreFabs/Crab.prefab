@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 3018529747805120133}
   m_Layer: 0
   m_Name: Crab
-  m_TagString: Untagged
+  m_TagString: Crab
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -81,10 +81,10 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 7838436323390675806, guid: d00d893fda288267c9b0b90591b732f7, type: 3}
+  - {fileID: -905690159841262435, guid: 766cd54dfcac7607fb1f98243278512b, type: 3}
   - {fileID: -1580535799172915004, guid: a34ca5808efac824cbe81dc8b16d973a, type: 3}
   - {fileID: -3523794957972702855, guid: 8d1ade95b76af92168ce920b4930fe96, type: 3}
-  - {fileID: 4167910553179981948, guid: 5a98eade01412b68490be4bda2f28c3a, type: 3}
+  - {fileID: -8848810374240701247, guid: 3ddb90d6112e9d0ac88b6eb035783713, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -384,7 +384,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2, y: 2, z: 2}
+  m_Size: {x: 2, y: 3, z: 2}
   m_Center: {x: 0, y: 0.65, z: 0}
 --- !u!95 &5366871234906604945
 Animator:

@@ -28,7 +28,7 @@ public class CrabMovement : MonoBehaviour
 
     //======================= Obstacle Detection 
     private bool _walkIsBlocked;     //Tells us if there is an obstacle in front of the player 
-    private bool _jumpIsBlocked;     //Tells us theres an obstacle 2 spaces from placyer 
+    private bool _jumpIsBlocked;     //Tells us theres an obstacle 2 spaces from player 
     
     //======================= Turning Around 
     private bool _turnDirection;        //Determines if the player will turn left or right
@@ -40,7 +40,7 @@ public class CrabMovement : MonoBehaviour
     private bool _positiveMovement;             //Is the player moving along the positive or negative  x/z axis
     private Vector3 _originalPosition;          //Where the player started, to reset after player lands on their position 
     public float jumpVelocity = 6.5f;           //How high the player jumps 
-    private ParticleSystem _dustParticleSystem;
+    private ParticleSystem _dustParticleSystem; //Dust that spawns when player hits the ground 
 
     //======================= Components 
     private Rigidbody _rigidbody;               //Used to set the player to jump
@@ -55,9 +55,12 @@ public class CrabMovement : MonoBehaviour
     {
         _animator = GetComponent<Animator>();
         _rigidbody = GetComponent<Rigidbody>();
-        _dustParticleSystem = transform.Find($"DustSmoke").transform.Find("Particle System")
+        Transform transformReference;
+        _dustParticleSystem = (transformReference = transform).Find($"DustSmoke").transform.Find("Particle System")
             .GetComponent<ParticleSystem>();
-        _originalPosition = transform.position;
+        _originalPosition = transformReference.position;
+        
+        _animator.Play("MonsterArmature|Idle");
     }
 
     //Depending on state listens for player input or moves the character 
