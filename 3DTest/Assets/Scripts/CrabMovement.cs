@@ -345,7 +345,6 @@ public class CrabMovement : MonoBehaviour
         if (hitBox.CompareTag($"Obstacle"))
         {
             var dist = Vector3.Distance(hitBox.transform.position, transform.position);
-            Debug.Log(dist);
             if (dist > 0 && dist < 2.5f)
             {
                 _walkIsBlocked = true;
@@ -372,16 +371,13 @@ public class CrabMovement : MonoBehaviour
                 _jumpIsBlocked = true;
                 _walkIsBlocked = false;
             }
-            Debug.Log(dist + " " + _walkIsBlocked);
         }
     }
 
     private void OnTriggerExit(Collider hitBox)
     {
-        if (hitBox.CompareTag($"Obstacle"))
-        {
-            _walkIsBlocked = false;
-            _jumpIsBlocked = false;
-        }
+        if (!hitBox.CompareTag($"Obstacle")) return;
+        _walkIsBlocked = false;
+        _jumpIsBlocked = false;
     }
 }

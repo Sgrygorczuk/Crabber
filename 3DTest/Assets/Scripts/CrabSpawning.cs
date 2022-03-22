@@ -43,5 +43,6 @@ public class CrabSpawning : MonoBehaviour
     public void MoveToRespawn()
     {
         transform.position = _respawn.position;
+        transform.position += Vector3.up / 3f;
     }
 }
