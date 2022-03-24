@@ -6,6 +6,10 @@ public class CrabCollector : MonoBehaviour
     private MeshRenderer _appleMeshRenderer;      //The display apple that will have it's mesh rendered update 
     private Material[] _materials;                //The materials that the apple will receive 
     private GameFlow _gameFlowScript;             //Game Flow to update when player touched a crab 
+
+    //========================= Audio 
+    private AudioSource _appleAudio;
+    private AudioSource _crabAudio;
     
     //==================================================================================================================
     // Base Functions 
@@ -17,6 +21,9 @@ public class CrabCollector : MonoBehaviour
         _materials = GameObject.Find($"Collectibles").transform.Find($"Fruit").GetComponent<MeshRenderer>().materials;
         _gameFlowScript = GameObject.Find($"GameFlow").GetComponent<GameFlow>();
         _appleMeshRenderer = GameObject.Find($"Top Down Camera").transform.Find($"Camera").transform.Find($"Fruit Collectible").GetComponent<MeshRenderer>();
+        
+        _appleAudio = transform.Find($"Audio").transform.Find($"CollectApple").GetComponent<AudioSource>();
+        _crabAudio = transform.Find($"Audio").transform.Find($"CrabCollector").GetComponent<AudioSource>();
     }
 
     //==================================================================================================================
@@ -29,6 +36,7 @@ public class CrabCollector : MonoBehaviour
         {
             var dist = Vector3.Distance(hitBox.transform.position, transform.position);
             if (!(dist < 1f)) return;
+            _crabAudio.Play();
             StartCoroutine(_gameFlowScript.Win());
         }
         
@@ -36,6 +44,7 @@ public class CrabCollector : MonoBehaviour
         if (!hitBox.CompareTag($"Fruit")) return;
         var distance = Vector3.Distance(hitBox.transform.position, transform.position);
         if (!(distance < 1)) return;
+        _appleAudio.Play();
         _appleMeshRenderer.materials = _materials;
         Destroy(hitBox.gameObject);
     }

@@ -7,6 +7,10 @@ public class CrabSpawning : MonoBehaviour
     private GameFlow _gameFlowScript;   //Reference to the gameFlow script that will take away player control during respawn 
     private Animator _animator;         //Controls the player's animations 
     
+    //================ Audio 
+    private AudioSource _death;
+    private AudioSource _checkpoint;
+    
     //==================================================================================================================
     // Base Functions 
     //==================================================================================================================
@@ -17,6 +21,9 @@ public class CrabSpawning : MonoBehaviour
         _respawn = GameObject.Find($"Respawn").transform;
         _animator = transform.GetComponent<Animator>();
         _gameFlowScript = GameObject.Find("GameFlow").GetComponent<GameFlow>();
+
+        _death = transform.Find($"Audio").transform.Find($"Death").GetComponent<AudioSource>();
+        _checkpoint = transform.Find($"Audio").transform.Find($"Checkpoint").GetComponent<AudioSource>();
     }
 
     //==================================================================================================================
@@ -29,12 +36,17 @@ public class CrabSpawning : MonoBehaviour
         //Checks if the player died, if so tell Game Flow to stop player from acting 
         if (hitBox.CompareTag($"Death"))
         {
+            _gameFlowScript.PlayerColliderUpdate(false);
+            _death.Play();
             _animator.Play("MonsterArmature|Death");
             StartCoroutine(_gameFlowScript.Death());
         }
         //If player touched a new save spot save that as new location 
         else if (hitBox.CompareTag($"Checkpoint"))
         {
+            var distance = Vector3.Distance(hitBox.transform.position, transform.position);
+            if (!(distance < 0.8f)) return;
+            _checkpoint.Play();
             _respawn = hitBox.transform;
         }
     }
@@ -43,6 +55,6 @@ public class CrabSpawning : MonoBehaviour
     public void MoveToRespawn()
     {
         transform.position = _respawn.position;
-        transform.position += Vector3.up / 3f;
+        transform.position += Vector3.up / 4f;
     }
 }

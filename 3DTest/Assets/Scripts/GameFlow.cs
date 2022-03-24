@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using Cinemachine;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameFlow : MonoBehaviour
 {
@@ -18,6 +19,8 @@ public class GameFlow : MonoBehaviour
     private CrabMovement _crabMovementScript;       //Script that controls player movement 
     private CrabSpawning _crabSpawningScript;       //Script that controls player respawning 
     private Rigidbody _crabRigidbody;               //Crabs rigidbody that controls it's physics movement 
+    private BoxCollider _feet;
+    private BoxCollider _ahead; 
     
     //==================== Transition Animations 
     private Animator _fadeCanvasAnimator;           //Animation used to fade in and out when player dies 
@@ -47,6 +50,8 @@ public class GameFlow : MonoBehaviour
         _crabMovementScript = GameObject.Find($"PlayerCrab").GetComponent<CrabMovement>();
         _crabSpawningScript = GameObject.Find($"PlayerCrab").GetComponent<CrabSpawning>();
         _crabRigidbody = GameObject.Find($"PlayerCrab").GetComponent<Rigidbody>();
+        _ahead = GameObject.Find($"PlayerCrab").transform.Find($"AheadCollider").GetComponent<BoxCollider>();
+        _feet = GameObject.Find($"PlayerCrab").transform.Find($"FeetCollider").GetComponent<BoxCollider>();
         
         //Connects animation components 
         _fadeCanvasAnimator = GameObject.Find($"FadeCanvas").GetComponent<Animator>();
@@ -92,6 +97,12 @@ public class GameFlow : MonoBehaviour
     //==================================================================================================================
 
 
+    public void PlayerColliderUpdate(bool state)
+    {
+        _feet.enabled = state;
+        _ahead.enabled = state;
+    }
+    
     //Make player wait for 2 sec till fade ends and then allows the player to control the crab 
     private IEnumerator ToPlayer()
     {
@@ -122,9 +133,11 @@ public class GameFlow : MonoBehaviour
         yield return new WaitForSeconds(1.1f);
         _crabRigidbody.useGravity = true;
         _crabMovementScript.enabled = true;
+        PlayerColliderUpdate(true);
         _currentGame = GameState.Player;
     }
 
+    
     //The Win Process, moves the camera to a screen of the crabs dancing and play the outro animation 
     public IEnumerator Win()
     {
@@ -150,6 +163,6 @@ public class GameFlow : MonoBehaviour
         yield return new WaitForSeconds(5f);
         _winAnimator.Play($"LevelEnd");
         yield return new WaitForSeconds(2.1f);
-        //Exit levle
+        SceneManager.LoadScene(nextLevelName);
     }
 }

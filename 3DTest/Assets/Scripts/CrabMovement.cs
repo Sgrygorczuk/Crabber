@@ -35,44 +35,61 @@ public class CrabMovement : MonoBehaviour
     private float _turnGoal;            //Tells us what angle the player is spinning to 
 
     //======================= Moving Froward 
-    private const float SpeedVar = 0.05f;       //How fast the player moves forward 
+    private const float TurnVar = 5;
+    private const float SpeedVar = 0.1f;        //How fast the player moves forward 
     private float _moveDistance;                //How far the player has to move 2 [Walk] and 4 [Jump]
     private bool _positiveMovement;             //Is the player moving along the positive or negative  x/z axis
     private Vector3 _originalPosition;          //Where the player started, to reset after player lands on their position 
     public float jumpVelocity = 6.5f;           //How high the player jumps 
     private ParticleSystem _dustParticleSystem; //Dust that spawns when player hits the ground 
+    private bool _inAir;                        //To active dust and land SFX
 
     //======================= Components 
     private Rigidbody _rigidbody;               //Used to set the player to jump
     private Animator _animator;                 //Used to switch between different animations
     
+    //========================= Audio 
+    private AudioSource _landAudio;
+    private AudioSource _blockedAudio;
+
     //==================================================================================================================
     // Base Functions 
     //==================================================================================================================
-    
+
+    private void Awake()
+    {
+        _animator = GetComponent<Animator>();
+        _animator.Play("MonsterArmature|Idle");
+    }
+
+
     //Initializes components 
     private void Start()
     {
-        _animator = GetComponent<Animator>();
         _rigidbody = GetComponent<Rigidbody>();
         Transform transformReference;
         _dustParticleSystem = (transformReference = transform).Find($"DustSmoke").transform.Find("Particle System")
             .GetComponent<ParticleSystem>();
         _originalPosition = transformReference.position;
-        
-        _animator.Play("MonsterArmature|Idle");
+
+        _landAudio = transformReference.Find($"Audio").transform.Find($"Land").GetComponent<AudioSource>();
+        _blockedAudio = transformReference.Find($"Audio").transform.Find($"Blocked").GetComponent<AudioSource>();
+    }
+
+    public void Update()
+    {
+        if (_currentMovement == MovementState.Idle)
+        {
+            PlayerInput();
+        }
+
     }
 
     //Depending on state listens for player input or moves the character 
-    public void Update()
+    public void FixedUpdate()
     {
         switch (_currentMovement)
         {
-            case MovementState.Idle:
-            {
-                PlayerInput();
-                break;
-            }
             case MovementState.Turning:
             {
                 Turn();
@@ -88,8 +105,9 @@ public class CrabMovement : MonoBehaviour
                 MoveForward(4f);
                 break;
             }
+            case MovementState.Idle:
             default:
-                throw new ArgumentOutOfRangeException();
+                return;
         }
     }
 
@@ -203,7 +221,7 @@ public class CrabMovement : MonoBehaviour
     {
         //Updates the position 
         var transformReference = transform;
-        transformReference.eulerAngles += new Vector3(0.0f, _turnDirection ? 2.5f : -2.5f, 0.0f);
+        transformReference.eulerAngles += new Vector3(0.0f, _turnDirection ? TurnVar : -TurnVar, 0.0f);
 
         //Checks if is done turning 
         if (!(Math.Abs(_turnGoal - transformReference.eulerAngles.y) < 1.5f)) return;
@@ -235,9 +253,10 @@ public class CrabMovement : MonoBehaviour
         //Check for blocks 
         if(isWalking && _walkIsBlocked)
         {
+            _blockedAudio.Play();
             return;
         }
-        
+
         //Save position for future update 
         _originalPosition = transform.position;
         
@@ -294,10 +313,10 @@ public class CrabMovement : MonoBehaviour
         var transformReference = transform;
         transformReference.position = _currentlyFacing switch
         {
-            Facing.Up => _originalPosition + new Vector3(0.0f, 0.0f, distance),
-            Facing.Down => _originalPosition + new Vector3(0.0f, 0.0f, -distance),
-            Facing.Right =>_originalPosition + new Vector3(distance, 0.0f, 0.0f),
-            Facing.Left =>_originalPosition + new Vector3(-distance, 0.0f, 0.0f),
+            Facing.Up => new Vector3(_originalPosition.x, transformReference.position.y, _originalPosition.z) + new Vector3(0.0f, 0.0f, distance),
+            Facing.Down => new Vector3(_originalPosition.x, transformReference.position.y, _originalPosition.z) + new Vector3(0.0f, 0.0f, -distance),
+            Facing.Right =>new Vector3(_originalPosition.x, transformReference.position.y, _originalPosition.z) + new Vector3(distance, 0.0f, 0.0f),
+            Facing.Left =>new Vector3(_originalPosition.x, transformReference.position.y, _originalPosition.z) + new Vector3(-distance, 0.0f, 0.0f),
             _ => transformReference.position
         };
     }
@@ -307,15 +326,15 @@ public class CrabMovement : MonoBehaviour
     {
         if (_jumpIsBlocked)
         {
+            _blockedAudio.Play();
             yield break;
         }
         
+        _inAir = true;
         _animator.Play($"MonsterArmature|Jump");
         yield return new WaitForSeconds(0.12f);
         _currentMovement = MovementState.Jumping;
         _rigidbody.velocity = new Vector3(0, jumpVelocity, 0);
-        yield return new WaitForSeconds(1.3f);
-        _dustParticleSystem.Play();
     }
     
     //==================================================================================================================
@@ -379,5 +398,13 @@ public class CrabMovement : MonoBehaviour
         if (!hitBox.CompareTag($"Obstacle")) return;
         _walkIsBlocked = false;
         _jumpIsBlocked = false;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (!_inAir) return;
+        _inAir = false;
+        _dustParticleSystem.Play();
+        _landAudio.Play();
     }
 }

@@ -85,6 +85,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 95bfe1345188fff59ac171281bd5d7fb, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: -7948898813885743936, guid: e685bf2be07c823e4bafa5d352cad6bb, type: 3}
+    - target: {fileID: -7511558181221131132, guid: 95bfe1345188fff59ac171281bd5d7fb, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: -8580863504186246832, guid: dad52432bff9134f7a557ea9559b474a, type: 3}
+    - target: {fileID: -7511558181221131132, guid: 95bfe1345188fff59ac171281bd5d7fb, type: 3}
+      propertyPath: m_Materials.Array.data[2]
+      value: 
+      objectReference: {fileID: 8027599372619836701, guid: 21bbc5285459899879469dd97519c550, type: 3}
     - target: {fileID: 919132149155446097, guid: 95bfe1345188fff59ac171281bd5d7fb, type: 3}
       propertyPath: m_Name
       value: Cube_Dark_Grass_Single

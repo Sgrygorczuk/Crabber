@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4598226630522827090}
   - component: {fileID: 1744258150600344984}
   m_Layer: 0
-  m_Name: Cube_Grass_Single
+  m_Name: Cube_Light_Single
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -60,7 +60,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 6609165504356089444, guid: e0bad33d0d618867fafcfec9394553a4, type: 3}
+  - {fileID: 6609165504356089444, guid: 34d69b90882bbeeac8614915e7a68319, type: 3}
   - {fileID: 8027599372619836701, guid: e0bad33d0d618867fafcfec9394553a4, type: 3}
   - {fileID: -6311603398430641927, guid: e0bad33d0d618867fafcfec9394553a4, type: 3}
   - {fileID: -8580863504186246832, guid: e0bad33d0d618867fafcfec9394553a4, type: 3}
@@ -112,7 +112,7 @@ Transform:
   m_GameObject: {fileID: 6319125984533159859}
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: -0, z: 0.01}
-  m_LocalScale: {x: 0.002, y: 0.002, z: 0.002}
+  m_LocalScale: {x: 0.0019, y: 0.0019, z: 0.0019}
   m_Children: []
   m_Father: {fileID: 612477829615124215}
   m_RootOrder: 0
