@@ -5,19 +5,21 @@ using UnityEngine.SceneManagement;
 
 public class MenuFlow : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private bool _loaded;
+    
+    // Update is called once per frame
+    public void Update()
     {
-        
+        if (!Input.GetButtonDown("Jump") || _loaded) return;
+        StartCoroutine(Load());
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        //Player jumps forward 
-        if (Input.GetButtonDown("Jump"))
-        {
-            SceneManager.LoadScene("Level_One");
-        }
+    private IEnumerator Load()
+    {   
+        _loaded = true;
+        GameObject.Find($"FadeCanvas").GetComponent<Animator>().Play("FadeCanvasIn");
+        yield return new WaitForSeconds(2.1f);
+        
+        SceneManager.LoadScene("Level_One");
     }
 }

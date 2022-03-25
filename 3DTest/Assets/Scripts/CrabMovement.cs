@@ -27,8 +27,8 @@ public class CrabMovement : MonoBehaviour
     private MovementState _currentMovement = MovementState.Idle;     //Current state the player is in 
 
     //======================= Obstacle Detection 
-    private bool _walkIsBlocked;     //Tells us if there is an obstacle in front of the player 
-    private bool _jumpIsBlocked;     //Tells us theres an obstacle 2 spaces from player 
+    public bool _walkIsBlocked;     //Tells us if there is an obstacle in front of the player 
+    public bool _jumpIsBlocked;     //Tells us theres an obstacle 2 spaces from player 
     
     //======================= Turning Around 
     private bool _turnDirection;        //Determines if the player will turn left or right
@@ -42,7 +42,7 @@ public class CrabMovement : MonoBehaviour
     private Vector3 _originalPosition;          //Where the player started, to reset after player lands on their position 
     public float jumpVelocity = 6.5f;           //How high the player jumps 
     private ParticleSystem _dustParticleSystem; //Dust that spawns when player hits the ground 
-    private bool _inAir;                        //To active dust and land SFX
+    public bool _inAir;                        //To active dust and land SFX
 
     //======================= Components 
     private Rigidbody _rigidbody;               //Used to set the player to jump
@@ -97,12 +97,12 @@ public class CrabMovement : MonoBehaviour
             }
             case MovementState.Walking:
             {
-                MoveForward(2f);
+                MoveForward(2f, SpeedVar);
                 break;
             }
             case MovementState.Jumping:
             {
-                MoveForward(4f);
+                MoveForward(4f, SpeedVar/2f);
                 break;
             }
             case MovementState.Idle:
@@ -147,6 +147,7 @@ public class CrabMovement : MonoBehaviour
             return;
         }
         
+        if(_inAir) {return;}
         //If the player is facing the direction they want to move to, move forward 
         if (playerAction == _currentlyFacing)
         {
@@ -287,20 +288,20 @@ public class CrabMovement : MonoBehaviour
 
     //Used by Update function to move the player forward, once the player reached their destination readjust and 
     //set to idle 
-    private void MoveForward(float distance)
+    private void MoveForward(float distance, float speed)
     {
         //Moving forward or backwards 
         if (_currentlyFacing == Facing.Up || _currentlyFacing == Facing.Down)
         {
-            transform.position += _positiveMovement ? new Vector3(0, 0, SpeedVar) : new Vector3(0, 0, -SpeedVar) ;
+            transform.position += _positiveMovement ? new Vector3(0, 0, speed) : new Vector3(0, 0, -speed) ;
         }
         else
         {
-            transform.position += _positiveMovement ? new Vector3(SpeedVar, 0, 0) : new Vector3(-SpeedVar, 0, 0);
+            transform.position += _positiveMovement ? new Vector3(speed, 0, 0) : new Vector3(-speed, 0, 0);
         }
         
         //Count down till we reach the destination 
-        _moveDistance += _positiveMovement ? -SpeedVar : SpeedVar;
+        _moveDistance += _positiveMovement ? -speed : speed;
 
         //Check if we're done 
         if ((!(Math.Abs(_moveDistance - 0) < 0.01f))) return;
@@ -311,14 +312,16 @@ public class CrabMovement : MonoBehaviour
         
         //Readjust in reference to original position 
         var transformReference = transform;
-        transformReference.position = _currentlyFacing switch
+        var position = transformReference.position;
+        position = _currentlyFacing switch
         {
-            Facing.Up => new Vector3(_originalPosition.x, transformReference.position.y, _originalPosition.z) + new Vector3(0.0f, 0.0f, distance),
-            Facing.Down => new Vector3(_originalPosition.x, transformReference.position.y, _originalPosition.z) + new Vector3(0.0f, 0.0f, -distance),
-            Facing.Right =>new Vector3(_originalPosition.x, transformReference.position.y, _originalPosition.z) + new Vector3(distance, 0.0f, 0.0f),
-            Facing.Left =>new Vector3(_originalPosition.x, transformReference.position.y, _originalPosition.z) + new Vector3(-distance, 0.0f, 0.0f),
-            _ => transformReference.position
+            Facing.Up => new Vector3(_originalPosition.x, position.y, _originalPosition.z) + new Vector3(0.0f, 0.0f, distance),
+            Facing.Down => new Vector3(_originalPosition.x, position.y, _originalPosition.z) + new Vector3(0.0f, 0.0f, -distance),
+            Facing.Right =>new Vector3(_originalPosition.x, position.y, _originalPosition.z) + new Vector3(distance, 0.0f, 0.0f),
+            Facing.Left =>new Vector3(_originalPosition.x, position.y, _originalPosition.z) + new Vector3(-distance, 0.0f, 0.0f),
+            _ => position
         };
+        transformReference.position = position;
     }
 
     //Starts the jump and gives player velocity 
@@ -350,6 +353,8 @@ public class CrabMovement : MonoBehaviour
     //Makes the crab face forward after dying 
     public void ResetOnDeath()
     {
+        _jumpIsBlocked = false;
+        _walkIsBlocked = false;
         _animator.Play($"MonsterArmature|Idle");
         _currentlyFacing = Facing.Up;
         transform.eulerAngles = new Vector3(0.0f, 0.0f, 0.0f);
@@ -361,35 +366,31 @@ public class CrabMovement : MonoBehaviour
     
     private void OnTriggerEnter(Collider hitBox)
     {
-        if (hitBox.CompareTag($"Obstacle"))
+        if (!hitBox.CompareTag($"Obstacle")) return;
+        var dist = Vector3.Distance(hitBox.transform.position, transform.position);
+        if (dist > 0 && dist < 2.5f)
         {
-            var dist = Vector3.Distance(hitBox.transform.position, transform.position);
-            if (dist > 0 && dist < 2.5f)
-            {
-                _walkIsBlocked = true;
-            }
-            else if (dist > 2.5f && dist < 4.5f)
-            {
-                _jumpIsBlocked = true;
-            }
+            _walkIsBlocked = true;
+        }
+        else if (dist > 2.5f && dist < 4.5f)
+        {
+            _jumpIsBlocked = true;
         }
     }
 
     private void OnTriggerStay(Collider hitBox)
     {
-        if (hitBox.CompareTag($"Obstacle"))
+        if (!hitBox.CompareTag($"Obstacle")) return;
+        var dist = Vector3.Distance(hitBox.transform.position, transform.position);
+        if (dist > 0 && dist < 2.5f)
         {
-            var dist = Vector3.Distance(hitBox.transform.position, transform.position);
-            if (dist > 0 && dist < 2.5f)
-            {
-                _walkIsBlocked = true;
-                _jumpIsBlocked = false;
-            }
-            else if (dist > 2.5f && dist < 4.5f)
-            {
-                _jumpIsBlocked = true;
-                _walkIsBlocked = false;
-            }
+            _walkIsBlocked = true;
+            _jumpIsBlocked = false;
+        }
+        else if (dist > 2.5f && dist < 4.5f)
+        {
+            _jumpIsBlocked = true;
+            _walkIsBlocked = false;
         }
     }
 
@@ -400,7 +401,7 @@ public class CrabMovement : MonoBehaviour
         _jumpIsBlocked = false;
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnCollisionEnter()
     {
         if (!_inAir) return;
         _inAir = false;

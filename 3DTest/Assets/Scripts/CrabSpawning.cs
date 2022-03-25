@@ -54,7 +54,9 @@ public class CrabSpawning : MonoBehaviour
     //Moves the player to the respawn point 
     public void MoveToRespawn()
     {
-        transform.position = _respawn.position;
-        transform.position += Vector3.up / 4f;
+        var transform1 = transform;
+        var position = _respawn.position;
+        //position += Vector3.up / 4f;
+        transform1.position = position;
     }
 }
