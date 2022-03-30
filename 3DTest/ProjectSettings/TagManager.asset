@@ -11,6 +11,7 @@ TagManager:
   - Fruit
   - Crab
   - Tip
+  - Saw
   layers:
   - Default
   - TransparentFX

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class CrabSpawning : MonoBehaviour
@@ -10,6 +11,8 @@ public class CrabSpawning : MonoBehaviour
     //================ Audio 
     private AudioSource _death;
     private AudioSource _checkpoint;
+
+    private bool isDead;
     
     //==================================================================================================================
     // Base Functions 
@@ -34,21 +37,32 @@ public class CrabSpawning : MonoBehaviour
     private void OnTriggerEnter(Collider hitBox)
     {
         //Checks if the player died, if so tell Game Flow to stop player from acting 
-        if (hitBox.CompareTag($"Death"))
+        if (hitBox.CompareTag($"Death") && !isDead)
         {
+            isDead = true;
             _gameFlowScript.PlayerColliderUpdate(false);
             _death.Play();
             _animator.Play("MonsterArmature|Death");
             StartCoroutine(_gameFlowScript.Death());
         }
+       
         //If player touched a new save spot save that as new location 
-        else if (hitBox.CompareTag($"Checkpoint"))
-        {
-            var distance = Vector3.Distance(hitBox.transform.position, transform.position);
-            if (!(distance < 0.8f)) return;
-            _checkpoint.Play();
-            _respawn = hitBox.transform;
-        }
+        if (!hitBox.CompareTag($"Checkpoint")) return;
+        var distance = Vector3.Distance(hitBox.transform.position, transform.position);
+        if (!(distance < 0.8f)) return;
+        _checkpoint.Play();
+        _respawn = hitBox.transform;
+    }
+
+    private void OnCollisionEnter(Collision hitBox)
+    {
+        //Checks if the player died, if so tell Game Flow to stop player from acting 
+        if (!hitBox.collider.CompareTag($"Saw") || isDead) return;
+        isDead = true;
+        _gameFlowScript.PlayerColliderUpdate(false);
+        _death.Play();
+        _animator.Play("MonsterArmature|Death");
+        StartCoroutine(_gameFlowScript.Death());
     }
 
     //Moves the player to the respawn point 
@@ -56,7 +70,8 @@ public class CrabSpawning : MonoBehaviour
     {
         var transform1 = transform;
         var position = _respawn.position;
-        //position += Vector3.up / 4f;
         transform1.position = position;
+        isDead = false;
     }
+    
 }
