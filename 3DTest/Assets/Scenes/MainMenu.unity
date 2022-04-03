@@ -563,7 +563,7 @@ PrefabInstance:
     - target: {fileID: 3018529747805120133, guid: 32e590710e4f4345aa0bf250f21971bd, type: 3}
       propertyPath: m_Materials.Array.data[1]
       value: 
-      objectReference: {fileID: -1580535799172915004, guid: 75972ba3588f6bc279124d2885ff7806, type: 3}
+      objectReference: {fileID: -1580535799172915004, guid: 8de0a90a9c96a53379e4e1bb26518ebc, type: 3}
     - target: {fileID: 3018529747805120133, guid: 32e590710e4f4345aa0bf250f21971bd, type: 3}
       propertyPath: m_Materials.Array.data[2]
       value: 
@@ -571,7 +571,7 @@ PrefabInstance:
     - target: {fileID: 3018529747805120133, guid: 32e590710e4f4345aa0bf250f21971bd, type: 3}
       propertyPath: m_Materials.Array.data[3]
       value: 
-      objectReference: {fileID: -8848810374240701247, guid: 75972ba3588f6bc279124d2885ff7806, type: 3}
+      objectReference: {fileID: -8848810374240701247, guid: 09449400a75a34617b7fc3b23b103114, type: 3}
     - target: {fileID: 5096840189361518788, guid: 32e590710e4f4345aa0bf250f21971bd, type: 3}
       propertyPath: m_Name
       value: Crab
