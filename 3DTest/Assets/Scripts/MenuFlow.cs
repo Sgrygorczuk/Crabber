@@ -20,6 +20,6 @@ public class MenuFlow : MonoBehaviour
         GameObject.Find($"FadeCanvas").GetComponent<Animator>().Play("FadeCanvasIn");
         yield return new WaitForSeconds(2.1f);
         
-        SceneManager.LoadScene("Level_One");
+        SceneManager.LoadScene("CutScene_Start");
     }
 }
