@@ -38,10 +38,32 @@ public class GameFlow : MonoBehaviour
     
     //================= Level To Go To
     public string nextLevelName;                    //Holds name of the next scene 
+    public int levelPos;
+    [HideInInspector] public GameObject[] levelFruit = new GameObject[5];
     
     //==================================================================================================================
     // Base Functions 
     //==================================================================================================================
+
+    private void Awake()
+    {
+        //Connects all of the fruits in the screen 
+        levelFruit = new GameObject[5];
+        var parent = GameObject.Find($"Top Down Camera").transform.Find($"Camera").Find($"Screen Transition").transform;
+        levelFruit[0] = parent.Find($"Fruit_Level_One").gameObject;
+        levelFruit[1] = parent.Find($"Fruit_Level_Two").gameObject;
+        levelFruit[2] = parent.Find($"Fruit_Level_Three").gameObject;
+        levelFruit[3] = parent.Find($"Fruit_Level_Four").gameObject;
+        levelFruit[4] = parent.Find($"Fruit_Level_Five").gameObject;
+
+        //Gets the persistent data 
+        var data = GameObject.Find($"Data").GetComponent<Data>().GetFruitCollected();
+        //Makes sure the fruits are visible in the start of level 
+        for(var i = 0; i < data.Length - 1; i++)
+        {
+            if (data[i]) { levelFruit[i].SetActive(true); }
+        }
+    }
 
     //Sets up the game 
     private void Start()

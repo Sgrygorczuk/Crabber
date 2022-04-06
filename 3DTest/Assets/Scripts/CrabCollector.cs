@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class CrabCollector : MonoBehaviour
@@ -10,7 +11,7 @@ public class CrabCollector : MonoBehaviour
     //========================= Audio 
     private AudioSource _appleAudio;
     private AudioSource _crabAudio;
-    
+
     //==================================================================================================================
     // Base Functions 
     //==================================================================================================================
@@ -44,6 +45,12 @@ public class CrabCollector : MonoBehaviour
         if (!hitBox.CompareTag($"Fruit")) return;
         var distance = Vector3.Distance(hitBox.transform.position, transform.position);
         if (!(distance < 1)) return;
+        
+        //
+        var pos = GameObject.Find("GameFlow").GetComponent<GameFlow>().levelPos;
+        GameObject.Find($"Data").GetComponent<Data>().CollectFruit(pos);
+        GameObject.Find("GameFlow").GetComponent<GameFlow>().levelFruit[pos].SetActive(true);
+        
         _appleAudio.Play();
         _appleMeshRenderer.materials = _materials;
         Destroy(hitBox.gameObject);
