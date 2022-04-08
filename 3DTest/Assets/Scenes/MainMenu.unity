@@ -2346,6 +2346,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1597201977}
     m_Modifications:
+    - target: {fileID: 138129837, guid: 6f252b6a1cbcbaf22b1ff66a002456d3, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 138129837, guid: 6f252b6a1cbcbaf22b1ff66a002456d3, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2555740215573242076, guid: 6f252b6a1cbcbaf22b1ff66a002456d3, type: 3}
       propertyPath: m_Name
       value: SawHolder (1)
@@ -2888,6 +2896,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1597201977}
     m_Modifications:
+    - target: {fileID: 138129837, guid: 6f252b6a1cbcbaf22b1ff66a002456d3, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 138129837, guid: 6f252b6a1cbcbaf22b1ff66a002456d3, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2555740215573242076, guid: 6f252b6a1cbcbaf22b1ff66a002456d3, type: 3}
       propertyPath: m_Name
       value: SawHolder

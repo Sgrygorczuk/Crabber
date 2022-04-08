@@ -461,11 +461,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: "Game Developer \nSebastian Grygorczuk \n\nMusic \nYuriy Lehki \n\n3D Models
-    and Animations \nUltimate Platformer Pack (100+ Models) By quaternius\n\nAdditional
-    Art \nIrina Grygorczuk\n\nVisual Effects \nCustomizable skybox by  Key Mouse\nEffect
-    textures and prefabs by Magicpot Inc.\n\nSound Effects from Kenney.nl\nMusic
-    Jingles Pack\nRPG Audio Pack \nImpact Sounds Pack \n\nSound Effects from Freesound.org
-    \nNs_hardrive.wav by cmusounddesign\n\nFont \norange juice by www.brittneymurphydesign.com\n"
+    and Animations \nUltimate Platformer Pack (100+ Models) By quaternius\n\nVisual
+    Effects \nCustomizable skybox by  Key Mouse\nEffect textures and prefabs by Magicpot
+    Inc.\n\nSound Effects from Kenney\nMusic Jingles Pack\nRPG Audio Pack \nImpact
+    Sounds Pack \n\nSound Effects from Freesound.org \nNs_hardrive.wav by cmusounddesign\n\"Alert\"
+    Video Game Sound by EVRetro\nNom Noise by TheDragonsSpark\nsnoring woman by Tetoszka\n\n\nFont
+    \norange juice by www.brittneymurphydesign.com"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7e11a181e26e75599a9996a067d2b114, type: 2}
   m_sharedMaterial: {fileID: -5169676334947713708, guid: 7e11a181e26e75599a9996a067d2b114, type: 2}

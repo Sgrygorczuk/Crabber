@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class CrabSpawning : MonoBehaviour
@@ -12,7 +11,8 @@ public class CrabSpawning : MonoBehaviour
     private AudioSource _death;
     private AudioSource _checkpoint;
 
-    private bool isDead;
+    //Tells us the player is dead, stops from the death triggering again while touching the hit box 
+    private bool _isDead;
     
     //==================================================================================================================
     // Base Functions 
@@ -37,9 +37,9 @@ public class CrabSpawning : MonoBehaviour
     private void OnTriggerEnter(Collider hitBox)
     {
         //Checks if the player died, if so tell Game Flow to stop player from acting 
-        if (hitBox.CompareTag($"Death") && !isDead)
+        if (hitBox.CompareTag($"Death") && !_isDead)
         {
-            isDead = true;
+            _isDead = true;
             _gameFlowScript.PlayerColliderUpdate(false);
             _death.Play();
             _animator.Play("MonsterArmature|Death");
@@ -57,8 +57,8 @@ public class CrabSpawning : MonoBehaviour
     private void OnCollisionEnter(Collision hitBox)
     {
         //Checks if the player died, if so tell Game Flow to stop player from acting 
-        if (!hitBox.collider.CompareTag($"Saw") || isDead) return;
-        isDead = true;
+        if (!hitBox.collider.CompareTag($"Saw") || _isDead) return;
+        _isDead = true;
         _gameFlowScript.PlayerColliderUpdate(false);
         _death.Play();
         _animator.Play("MonsterArmature|Death");
@@ -71,7 +71,7 @@ public class CrabSpawning : MonoBehaviour
         var transform1 = transform;
         var position = _respawn.position;
         transform1.position = position;
-        isDead = false;
+        _isDead = false;
     }
     
 }

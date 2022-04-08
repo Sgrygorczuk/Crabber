@@ -7106,7 +7106,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   crabInTransition: {fileID: 1805067460}
-  nextLevelName: Credits
+  nextLevelName: CutScene_End
   levelPos: 4
   levelFruit:
   - {fileID: 0}

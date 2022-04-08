@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Scene_Start : MonoBehaviour
+public class SceneStart : MonoBehaviour
 {
     public string nextLevelName; 
 
