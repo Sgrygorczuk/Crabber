@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class CrabSpawning : MonoBehaviour
@@ -64,6 +65,7 @@ public class CrabSpawning : MonoBehaviour
         _animator.Play("MonsterArmature|Death");
         StartCoroutine(_gameFlowScript.Death());
     }
+    
 
     //Moves the player to the respawn point 
     public void MoveToRespawn()

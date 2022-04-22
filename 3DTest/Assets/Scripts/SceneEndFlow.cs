@@ -13,7 +13,7 @@ public class SceneEndFlow : MonoBehaviour
     private Animator _animator;         //Used to initiate the second animation if player got 5/5 
     
     //=============== Flags 
-    private bool _collectedAll = true; //Keeps track if player got all of the fruits 
+    public bool _collectedAll = true; //Keeps track if player got all of the fruits 
 
     //==================================================================================================================
     // Base Functions 

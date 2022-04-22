@@ -40,7 +40,7 @@ public class GameFlow : MonoBehaviour
     public string nextLevelName;                    //Holds name of the next scene 
     public int levelPos;
     [HideInInspector] public GameObject[] levelFruit = new GameObject[5];
-    
+
     //==================================================================================================================
     // Base Functions 
     //==================================================================================================================
@@ -170,6 +170,9 @@ public class GameFlow : MonoBehaviour
         //Fades out to the new camera position 
         _fadeCanvasAnimator.Play("FadeCanvasInAndOut");
         yield return new WaitForSeconds(1f);
+        
+        GameObject.Find($"Song").GetComponent<AudioSource>().Stop();
+        GameObject.Find($"Victory").GetComponent<AudioSource>().Play();
         
         //Updates the UI visual for fruit to disappear and update materials on the transition animation on crab 
         _fruit.GetComponent<MeshRenderer>().enabled = false;
